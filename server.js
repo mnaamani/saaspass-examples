@@ -7,6 +7,9 @@ var SaasPass = require("saaspass-client");
 //configure API secrets
 var secrets = require("./secret.json");
 var sp = SaasPass({key: secrets.key});
+
+var sp_applicationID = "1012";//SASSPASS application ID for widget
+
 sp.authenticate(secrets.password, function(err, token) {
   if(err) return console.log(err);
   console.log("Received token from SAASPASS");
@@ -25,7 +28,7 @@ app.get('/', function (req, res) {
 
 //display login widget
 app.get('/login', function (req, res) {
-  res.send('<iframe src="https://www.saaspass.com/sd/widget.html?otpSupported=true&ilSupported=true&applicationID=1012" \
+  res.send('<iframe src="https://www.saaspass.com/sd/widget.html?otpSupported=true&ilSupported=true&applicationID='+sp_applicationID+'" \
         width="100%" height="500"></iframe>');
 });
 
@@ -35,7 +38,18 @@ app.post('/auth/saaspass', function(req, res){
       console.log(err);
       return res.redirect("/login");
     }
-    console.log("User Authenticated", user.account);
+    console.log("User Authenticated via Instant Login:", user.account);
+    res.redirect('/welcome');
+  });
+});
+
+app.get('/auth/saaspass/sso', function(req, res){
+  sp.SSO.handleRequest(req, function(err, user){
+    if(err) {
+      console.log(err);
+      return res.redirect("/login");
+    }
+    console.log("User Authenticated via SSO:", user.account);
     res.redirect('/welcome');
   });
 });
