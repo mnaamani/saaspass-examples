@@ -1,0 +1,27 @@
+{
+  "name": "examples",
+  "version": "0.0.0",
+  "description": "",
+  "main": "\"\"",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "express": "^4.13.1",
+    "express-partials": "^0.3.0",
+    "saaspass-client": "^0.1.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mnaamani/saaspass-examples.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mnaamani/saaspass-examples/issues"
+  },
+  "homepage": "https://github.com/mnaamani/saaspass-examples"
+}
