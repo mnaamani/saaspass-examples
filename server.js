@@ -1,4 +1,7 @@
 var express = require("express");
+var partials = require('express-partials');
+var bodyParser = require('body-parser');
+
 var SaasPass = require("saaspass-client");
 
 //configure API secrets
@@ -10,6 +13,11 @@ sp.authenticate(secrets.password, function(err, token) {
 });
 
 var app = new express();
+app.use(partials());
+// Parse JSON (uniform resource locators)
+app.use(bodyParser.json());
+// Parse forms (signup/login)
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function (req, res) {
   res.send('SAASPASS Demo');
@@ -23,7 +31,10 @@ app.get('/login', function (req, res) {
 
 app.post('/auth/saaspass', function(req, res){
   sp.TRACKER.handleRequest(req, function(err, user){
-    if(err) return console.log(err);
+    if(err) {
+      console.log(err);
+      return res.redirect("/login");
+    }
     console.log("User Authenticated", user.account);
     res.redirect('/welcome');
   });
