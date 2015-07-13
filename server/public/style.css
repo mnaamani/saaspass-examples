@@ -1,0 +1,142 @@
+body {
+  margin: 5px;
+  font-family: arial, sans-serif;
+}
+
+a {
+  color: #333;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+h1,h2,h3 {
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.navigation {
+  width: 100%;
+  height: 30px;
+  background-color: #C2D1E0;
+}
+
+.navigation ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navigation li {
+  display: inline-block;
+}
+
+.navigation li a {
+  width: 100px;
+  height: 20px;
+  line-height: 20px;
+  padding: 5px;
+  display:block;
+  text-align: center;
+}
+
+.navigation li a:hover {
+  background-color: #336699;
+  color:white;
+}
+
+.navigation li a.selected {
+  background-color: #3399FF;
+  color: white;
+}
+
+.container {
+  /*clear: both;*/
+  margin-top: 2px;
+}
+
+.error {
+  background-color: #fee;
+  color: #a33;
+  padding: 10px;
+  margin: 0 10px;
+}
+
+.team-map ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-map li {
+  padding: 0;
+  display: inline-block;
+}
+
+.team-map li:hover {
+  background-color: #C2D1E0;
+}
+
+.faded {
+  opacity: 0.4;
+}
+
+.videos {
+  /*text-align: center;*/
+}
+.videoContainer {
+  position: relative;
+  width: 320px;
+  height: 240px;
+  background-color: black;
+  display: inline-block;
+}
+.videoContainer video {
+  width: 100%;
+  height: auto;
+}
+.videoContainer button.mute {
+  position: absolute;
+  width:100px;
+  z-index: 1;
+  bottom:2px;
+}
+.videoContainer button.pause {
+  position: absolute;
+  width:100px;
+  z-index: 1;
+  left:101px;
+  bottom:2px;
+}
+.connectionstate {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  text-align: center;
+  color: #fff
+}
+
+.volume {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  width: 100px;
+  bottom: 12px;
+  height: 5px;
+}
+
+.muted, .paused {
+  position: absolute;
+  z-index: 3;
+  color: #12acef;
+}
+
+.muted {
+  left: 0px;
+  bottom: 10%;
+  width: 100%;
+}
+.paused {
+  left: 0px;
+  top: 40%;
+  width: 100%;
+}

@@ -1,6 +1,7 @@
 var express = require("express");
 var partials = require('express-partials');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var SaasPass = require("saaspass-client");
 
@@ -8,7 +9,7 @@ var SaasPass = require("saaspass-client");
 var secrets = require("./secret.json");
 var sp = SaasPass({key: secrets.key});
 
-var sp_applicationID = process.env.SP_APP_ID || "1012";//SASSPASS application ID for widget
+var SP_APP_ID = process.env.SP_APP_ID || "1012";//SASSPASS application ID for widget
 
 sp.authenticate(secrets.password, function(err, token) {
   if(err) return console.log(err);
@@ -16,20 +17,40 @@ sp.authenticate(secrets.password, function(err, token) {
 });
 
 var app = new express();
+
+app.use(session({
+  secret: process.env.SESSION_SECRET || "239874sdsmnf,s1278z,aldfa;1"
+}));
+
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+
 app.use(partials());
 // Parse JSON (uniform resource locators)
 app.use(bodyParser.json());
 // Parse forms (signup/login)
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(express.static(__dirname + '/public'));
+
 app.get('/', function (req, res) {
-  res.send('SAASPASS Demo');
+  res.render("index", {
+    user: req.session.user
+  });
 });
 
 //display login widget
 app.get('/login', function (req, res) {
-  res.send('<iframe src="https://www.saaspass.com/sd/widget.html?otpSupported=true&ilSupported=true&applicationID='+sp_applicationID+'" \
-        width="100%" height="500"></iframe>');
+  res.render("login", {
+    SP_APP_ID: SP_APP_ID
+  });
+});
+
+app.get('/logout', function(req, res){
+  delete req.session.user;
+  req.session.destroy(function(){
+    res.redirect('/');
+  });
 });
 
 app.post('/auth/saaspass', function(req, res){
@@ -39,7 +60,10 @@ app.post('/auth/saaspass', function(req, res){
       return res.redirect("/login");
     }
     console.log("User Authenticated via Instant Login:", user.account);
-    res.redirect('/welcome');
+    req.session.regenerate(function(err) {
+      req.session.user = user.account;
+      res.redirect('/');
+    });
   });
 });
 
@@ -50,12 +74,11 @@ app.get('/auth/saaspass/sso', function(req, res){
       return res.redirect("/login");
     }
     console.log("User Authenticated via SSO:", user.account);
-    res.redirect('/welcome');
+    req.session.regenerate(function(err) {
+      req.session.user = user.account;
+      res.redirect('/');
+    });
   });
-});
-
-app.get('/welcome', function (req, res) {
-  res.send('Logged in Successfully.');
 });
 
 app.listen(3000, function () {

@@ -1,0 +1,20 @@
+<div class='navigation'>
+  <ul>
+    <li><a href='/'>Home</a></li>
+    <%if (user) { %>
+      <li><a href='/logout/'>Logout</a></li>
+    <% } else { %>
+      <li><a href='/login/'>Login</a></li>
+    <% } %>
+  </ul>
+</div>
+
+<div class='container'>
+  <%if(user){%><H2>Welcome <%=user%></H2><%}%>
+</div>
+
+<script>
+  $(function(){
+
+  });
+</script>
