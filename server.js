@@ -8,7 +8,7 @@ var SaasPass = require("saaspass-client");
 var secrets = require("./secret.json");
 var sp = SaasPass({key: secrets.key});
 
-var sp_applicationID = "1012";//SASSPASS application ID for widget
+var sp_applicationID = process.env.SP_APP_ID || "1012";//SASSPASS application ID for widget
 
 sp.authenticate(secrets.password, function(err, token) {
   if(err) return console.log(err);
