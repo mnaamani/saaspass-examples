@@ -11,10 +11,17 @@ var sp = SaasPass({key: secrets.key});
 
 var SP_APP_ID = process.env.SP_APP_ID || "1012";//SASSPASS application ID for widget
 
-sp.authenticate(secrets.password, function(err, token) {
-  if(err) return console.log(err);
-  console.log("Received token from SAASPASS");
-});
+(function refreshToken(){
+  sp.authenticate(secrets.password, function(err, token) {
+    if(err) {
+      return console.log(err);
+    }
+    console.log("Refreshed API token");
+    //refresh the token after 30 minutes -
+    //this only happens if we at least succesffuly got a token once
+    setTimeout(refreshToken, 30 * 60 * 1000);
+  });
+})();
 
 var app = new express();
 
